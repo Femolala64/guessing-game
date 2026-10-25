@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guessing Game</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ===================== Lobby gate ===================== -->
+<section id="gate" class="gate">
+  <div class="gate-card">
+    <h1>Guessing Game</h1>
+    <p class="muted">Start a session and share the code, or join one with a code.</p>
+
+    <label for="name">Your name</label>
+    <input id="name" type="text" maxlength="20" placeholder="e.g. David" autocomplete="off">
+
+    <div class="gate-actions">
+      <button id="btn-create" class="primary">Start a session</button>
+      <div class="or">or</div>
+      <div class="join-row">
+        <input id="session-code" type="text" maxlength="6" placeholder="CODE" autocomplete="off">
+        <button id="btn-join">Join</button>
+      </div>
+    </div>
+
+    <p id="gate-error" class="error" hidden></p>
+  </div>
+</section>
+
+<!-- ===================== Game room ===================== -->
+<main id="room" class="room" hidden>
+
+  <aside class="panel">
+    <div class="session-id">
+      <span class="label">Session</span>
+      <strong id="session-id-value">------</strong>
+      <button id="btn-copy" class="ghost" title="Copy code">copy</button>
+    </div>
+
+    <!-- R4: number of players connected -->
+    <div class="player-count">
+      <strong id="player-count">0</strong> <span class="muted">players connected</span>
+    </div>
+
+    <!-- R12: players can see each other's scores -->
+    <h2>Scores</h2>
+    <ul id="players" class="players"></ul>
+
+    <div id="status-line" class="status muted">Waiting in the lobby.</div>
+    <button id="btn-leave" class="ghost danger">Leave session</button>
+  </aside>
+
+  <section class="main">
+    <header class="main-head">
+      <!-- R7: question displayed to each player -->
+      <div id="question-banner" class="question-banner" hidden>
+        <span class="label">Question</span>
+        <p id="question-text"></p>
+      </div>
+      <div id="timer" class="timer" hidden><span id="timer-value">60</span>s</div>
+    </header>
+
+    <!-- R1: chat interface -->
+    <div id="log" class="log" aria-live="polite"></div>
+
+    <!-- Master-only: set a question, start the game -->
+    <div id="master-controls" class="composer master" hidden>
+      <input id="q-input" type="text" maxlength="200" placeholder="Question for the players" autocomplete="off">
+      <input id="a-input" type="text" maxlength="60" placeholder="Answer" autocomplete="off">
+      <button id="btn-set-question">Set question</button>
+      <button id="btn-start" class="primary" disabled>Start game</button>
+    </div>
+
+    <!-- Guess box, live only while a round runs -->
+    <div id="guess-controls" class="composer" hidden>
+      <input id="guess-input" type="text" maxlength="60" placeholder="Your guess" autocomplete="off">
+      <button id="btn-guess" class="primary">Guess</button>
+      <span id="attempts" class="attempts"></span>
+    </div>
+
+    <!-- Free chat, always available -->
+    <div class="composer">
+      <input id="chat-input" type="text" maxlength="300" placeholder="Say something" autocomplete="off">
+      <button id="btn-chat">Send</button>
+    </div>
+
+    <p id="room-error" class="error" hidden></p>
+  </section>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/events.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
